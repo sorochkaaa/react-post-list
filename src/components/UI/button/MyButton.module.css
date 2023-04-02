@@ -1,0 +1,13 @@
+.MyButton {
+    background: inherit;
+    border: 2px solid lightslategray;
+    padding: .5rem 1rem;
+    transition-duration: 0.3s;
+    font: inherit;
+    cursor: pointer;
+}
+
+.MyButton:hover {
+    background: lightslategray;
+    color: white;
+}
