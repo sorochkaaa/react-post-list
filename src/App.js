@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useState, useRef } from 'react';
 import PostFilter from './components/PostFilter';
 import PostForm from './components/PostForm';
@@ -6,22 +6,34 @@ import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
 import MyModal from './components/UI/MyModal/MyModal';
 import { usePosts } from './hooks/usePosts';
+import axios from 'axios';
 
 import "./styles/App.css"
+import PostService from './API/PostService';
 
 function App() {
   let [posts, setPosts] = useState([
-    {id :'1', title: "JavaScript", description: "JavaScript is a programming language!"},
-    {id :'2', title: "HTML", description: "HTML is HyperText Markup Language!"},
-    {id :'3', title: "Python", description: "Python is a programming language!"},
-    {id :'4', title: "Orange", description: "Orange is a fruit!"}
+    {id :'1', title: "JavaScript", body: "JavaScript is a programming language!"},
+    {id :'2', title: "HTML", body: "HTML is HyperText Markup Language!"},
+    {id :'3', title: "Python", body: "Python is a programming language!"},
+    {id :'4', title: "Orange", body: "Orange is a fruit!"}
   ]);
   
   const [filter, setFilter] = useState({selectedSort: '', searchQuery: ''});
 
+
+  useEffect(() => {
+    loadPosts();
+  }, [])
+
   function addNewPost(post) {
     setPosts([...posts, post]);
     setModal(false);
+  }
+
+  async function loadPosts() {
+    const posts = await PostService.getAll();
+    setPosts(posts);
   }
 
   function deletePost(postID) {

@@ -19,7 +19,7 @@ function PostFilter({filter, setFilter}) {
                 defaultValue="Sort by:"
                 options={[
                     {value: 'title', name: 'title'},
-                    {value: 'description', name: 'description'}
+                    {value: 'body', name: 'body'}
                 ]}
             />
         </div>
