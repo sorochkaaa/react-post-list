@@ -5,6 +5,7 @@ import PostForm from './components/PostForm';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
 import MyModal from './components/UI/MyModal/MyModal';
+import { usePosts } from './hooks/usePosts';
 
 import "./styles/App.css"
 
@@ -27,17 +28,7 @@ function App() {
     setPosts(posts.filter(post => post.id != postID));
   }
 
-  const sortedPosts = useMemo(() => {
-    return filter.selectedSort
-      ? [...posts].sort((post1, post2) => post1[filter.selectedSort].localeCompare(post2[filter.selectedSort]))
-      : posts;
-  }, [filter.selectedSort, posts]);
-
-  const sortedAndSearchedPosts = useMemo(() => {
-      return  filter.searchQuery 
-        ? sortedPosts.filter(post => post.title.toLowerCase().includes(filter.searchQuery.toLowerCase()))
-        : sortedPosts
-  }, [filter.searchQuery, sortedPosts]);
+  const sortedAndSearchedPosts = usePosts(posts, filter.selectedSort, filter.searchQuery);
 
   const [modal, setModal] = useState(false);
 
