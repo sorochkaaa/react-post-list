@@ -3,7 +3,7 @@ import MyInput from "./UI/input/MyInput";
 import MySelect from "./UI/select/MySelect"
 import React from "react";
 
-function PostFilter({filter, setFilter, posts}) {
+function PostFilter({filter, setFilter}) {
 
     return (
         <div>

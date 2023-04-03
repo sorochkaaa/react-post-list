@@ -5,9 +5,10 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 function PostList({posts, ...props}) {
     return (
         <div>
+            {!posts.length ? <h2 style={{textAlign: "center"}}>Посты не найдены!!!</h2> : ""}
             <TransitionGroup>
-                {posts.length 
-                    ? posts.map((post, index) => {
+                {
+                    posts.map((post, index) => {
                         return (
                             <CSSTransition
                                 key={post.id}
@@ -18,7 +19,6 @@ function PostList({posts, ...props}) {
                             </CSSTransition>
                         )
                     })
-                    : <h2 style={{textAlign: "center"}}>Посты не найдены!!!</h2>
                 }
             </TransitionGroup>
         </div>
