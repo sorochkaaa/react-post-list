@@ -6,20 +6,16 @@ import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
 import MyModal from './components/UI/MyModal/MyModal';
 import { usePosts } from './hooks/usePosts';
-import axios from 'axios';
-
 import "./styles/App.css"
 import PostService from './API/PostService';
+import Loader from './components/UI/Loader/Loader';
 
 function App() {
-  let [posts, setPosts] = useState([
-    {id :'1', title: "JavaScript", body: "JavaScript is a programming language!"},
-    {id :'2', title: "HTML", body: "HTML is HyperText Markup Language!"},
-    {id :'3', title: "Python", body: "Python is a programming language!"},
-    {id :'4', title: "Orange", body: "Orange is a fruit!"}
-  ]);
-  
+  const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({selectedSort: '', searchQuery: ''});
+  const sortedAndSearchedPosts = usePosts(posts, filter.selectedSort, filter.searchQuery);
+  const [modal, setModal] = useState(false);
+  const [isPostsLoading, setPostLoading] = useState(false);
 
 
   useEffect(() => {
@@ -32,17 +28,18 @@ function App() {
   }
 
   async function loadPosts() {
-    const posts = await PostService.getAll();
-    setPosts(posts);
+    setPostLoading(true);
+    setTimeout(async () => {
+      const posts = await PostService.getAll();
+      setPosts(posts);
+      setPostLoading(false);
+    }, 3000)
+    
   }
 
   function deletePost(postID) {
     setPosts(posts.filter(post => post.id != postID));
   }
-
-  const sortedAndSearchedPosts = usePosts(posts, filter.selectedSort, filter.searchQuery);
-
-  const [modal, setModal] = useState(false);
 
   return (
     <div className="App">
@@ -52,7 +49,9 @@ function App() {
       </MyModal>
       <PostFilter filter={filter} setFilter={setFilter}/>
       <hr/>
-      <PostList deletePost={deletePost} posts={sortedAndSearchedPosts}></PostList>
+      {isPostsLoading
+      ? <Loader/>
+      : <PostList deletePost={deletePost} posts={sortedAndSearchedPosts}></PostList>}
     </div>
   )
 }
